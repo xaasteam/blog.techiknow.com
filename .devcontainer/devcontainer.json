@@ -1,0 +1,47 @@
+{
+    "name": "Quarto Website Development",
+    "image": "mcr.microsoft.com/devcontainers/typescript-node",
+    "customizations": {
+    "vscode": {
+      "settings": { 
+        "terminal.integrated.shell.linux": "/bin/bash"
+      },
+      "extensions": [
+        "yzhang.markdown-all-in-one",
+        "ms-vscode-remote.vscode-remote-extensionpack",
+        "quarto.quarto" 
+      ]
+    }
+  },
+  // https://containers.dev/features
+  "features": {
+    "ghcr.io/devcontainers/features/aws-cli:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/python:1": {},
+    ghcr.io/devcontainers-contrib/features/act:1 	1.0.14
+act (via asdf) 	Daniel Braun 	ghcr.io/devcontainers-contrib/features/act-asdf:2 	2.0.13
+actionlint (via Github Releases) 	Daniel Braun 	ghcr.io/devcontainers-contrib/features/actionlint:1 	1.0.6
+GitHub Actions Runner 	Daniel Braun 	ghcr.io/devcontainers-contrib/features/actions-runner:1
+
+ghcr.io/devcontainers-contrib/features/apt-get-packages:1 	1.0.6
+apt packages (for Debian/Ubuntu) 	Daniel Braun 	ghcr.io/devcontainers-contrib/features/apt-packages:1
+
+ghcr.io/devcontainers-contrib/features/gh-cli:1 	1.0.12
+Github Release 	Daniel Braun 	
+
+ghcr.io/devcontainers-contrib/features/npm-package:1
+
+ghcr.io/devcontainers-contrib/features/terraform-asdf:2
+
+ghcr.io/guiyomh/features/vim:0
+
+  },
+  "forwardPorts": [
+    4000
+  ],
+  "mounts": [
+    "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
+  ],
+  "remoteUser": "vscode"
+}
