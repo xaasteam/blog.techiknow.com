@@ -1,5 +1,6 @@
 # docker build -t quarto-blog . 
-# docker run -p 8080:8080 quarto-blog .
+# docker run -p 8080:8080 quarto-blog
+# docker run -v "$(pwd)/docs:/app/docs" -p 8080:8080 quarto-blog
 # http://localhost:8080
 
 FROM debian:latest
@@ -12,15 +13,13 @@ FROM debian:latest
 # # Switch to the 'vscode' user
 # USER vscode
 
-# Install wget and ca-certificates
+# Install wget, ca-certificates, curl, gnupg, and Node.js
 RUN apt-get update && apt-get install -y wget ca-certificates curl gnupg && \
-    curl -sL https://deb.nodesource.com/setup_18.x | bash - \
+    curl -sL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get update && \
+    apt-get install -y nodejs && \
     # Cleanup to reduce image size
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
-
-
-# Install Node.js
-RUN apt-get install -y nodejs
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN node --version
 
@@ -44,7 +43,7 @@ RUN quarto --version
 RUN npm install -g http-server
 
 # Set the working directory
-WORKDIR /app
+WORKDIR /app/docs
 
 
 # # # Copy your Quarto project into the Docker image
@@ -56,5 +55,5 @@ WORKDIR /app
 # Expose port 8080 for the HTTP server
 EXPOSE 8080
 
-# Serve the static site
-CMD ["http-server", "website", "-p", "8080"]
+# Serve the static site from working directory
+CMD ["http-server", "/app/docs", "-p", "8080"]
