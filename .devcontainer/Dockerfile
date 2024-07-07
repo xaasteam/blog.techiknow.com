@@ -13,9 +13,16 @@ FROM debian:latest
 # USER vscode
 
 # Install wget and ca-certificates
-RUN apt-get update && apt-get install -y wget ca-certificates \
+RUN apt-get update && apt-get install -y wget ca-certificates curl gnupg && \
+    curl -sL https://deb.nodesource.com/setup_18.x | bash - \
     # Cleanup to reduce image size
     && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+
+# Install Node.js
+RUN apt-get install -y nodejs
+
+RUN node --version
 
 # Download Quarto CLI
 RUN wget https://github.com/quarto-dev/quarto-cli/releases/download/v1.5.53/quarto-1.5.53-linux-amd64.tar.gz
@@ -32,18 +39,6 @@ RUN rm quarto-1.5.53-linux-amd64.tar.gz
 
 # Verify installation
 RUN quarto --version
-
-
-# Install dependencies:
-# wget, ca-certificates, Node.js, and npm
-# RUN apt-get update && apt-get install -y wget ca-certificates curl gnupg \
-#     && curl -sL https://deb.nodesource.com/setup_14.x | bash - \
-#     && apt-get install -y nodejs \
-#     # Cleanup to reduce image size
-#     && apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# Install Node.js
-RUN apt-get install -y nodejs
 
 # Install http-server for serving static files
 RUN npm install -g http-server

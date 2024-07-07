@@ -19,23 +19,16 @@
     "ghcr.io/devcontainers/features/github-cli:1": {},
     "ghcr.io/devcontainers/features/git:1": {},
     "ghcr.io/devcontainers/features/python:1": {},
-    ghcr.io/devcontainers-contrib/features/act:1 	1.0.14
-act (via asdf) 	Daniel Braun 	ghcr.io/devcontainers-contrib/features/act-asdf:2 	2.0.13
-actionlint (via Github Releases) 	Daniel Braun 	ghcr.io/devcontainers-contrib/features/actionlint:1 	1.0.6
-GitHub Actions Runner 	Daniel Braun 	ghcr.io/devcontainers-contrib/features/actions-runner:1
-
-ghcr.io/devcontainers-contrib/features/apt-get-packages:1 	1.0.6
-apt packages (for Debian/Ubuntu) 	Daniel Braun 	ghcr.io/devcontainers-contrib/features/apt-packages:1
-
-ghcr.io/devcontainers-contrib/features/gh-cli:1 	1.0.12
-Github Release 	Daniel Braun 	
-
-ghcr.io/devcontainers-contrib/features/npm-package:1
-
-ghcr.io/devcontainers-contrib/features/terraform-asdf:2
-
-ghcr.io/guiyomh/features/vim:0
-
+    "ghcr.io/devcontainers-contrib/features/act:": {},
+    "ghcr.io/devcontainers-contrib/features/act-asdf": {},
+    "ghcr.io/devcontainers-contrib/features/actionlint": {},
+    "ghcr.io/devcontainers-contrib/features/actions-runner": {},
+    "ghcr.io/devcontainers-contrib/features/apt-get-packages": {},
+    "ghcr.io/devcontainers-contrib/features/apt-packages": {},
+    "ghcr.io/devcontainers-contrib/features/gh-cli": {},
+    "ghcr.io/devcontainers-contrib/features/npm-package": {},
+    "ghcr.io/devcontainers-contrib/features/terraform-asdf": {},
+    "ghcr.io/guiyomh/features/vim": {}
   },
   "forwardPorts": [
     4000
