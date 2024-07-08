@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 website:
-  title: "blog"
+  title: "Tech I Know"
   navbar:
     right:
       - about.qmd
