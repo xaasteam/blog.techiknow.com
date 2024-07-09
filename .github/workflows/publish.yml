@@ -28,6 +28,6 @@ jobs:
         uses: actions/deploy-pages@v4
         with:
           # Specify the path to the directory that contains the content to be deployed
-          path: ./build # Adjust this path to where your GitHub Pages content is located
+          path: ./docs # Adjust this path to where your GitHub Pages content is located
         env:
           GITHUB_TOKEN: ${{ secrets.PAGES_TOKEN }}
