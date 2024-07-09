@@ -13,7 +13,8 @@ jobs:
     permissions:
       packages: write
       contents: write # Ensure you have permissions to write contents
-      id-token: write 
+      id-token: write
+      pages: write
     steps:
       - uses: actions/checkout@v2
 
