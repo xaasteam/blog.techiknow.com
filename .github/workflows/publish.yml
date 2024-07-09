@@ -16,11 +16,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: "Publish"
-        uses: devcontainers/action@v1
-        with:
-          publish-templates: "true"
-          base-path-to-templates: "./docs"
+      # - name: "Publish"
+      #   uses: devcontainers/action@v1
+      #   with:
+      #     publish-templates: "true"
+      #     base-path-to-templates: "./docs"
 
       # Assuming the action above prepares the content for GitHub Pages in a folder (e.g., ./build)
       - name: Deploy to GitHub Pages
