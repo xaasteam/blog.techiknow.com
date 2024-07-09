@@ -23,6 +23,12 @@ jobs:
       #     publish-templates: "true"
       #     base-path-to-templates: "./docs"
 
+      - name: Upload Artifact for Deployment
+        uses: actions/upload-artifact@v4
+        with:
+          name: github-pages # This name must match what the deploy step expects
+          path: ./docs/*
+
       # Assuming the action above prepares the content for GitHub Pages in a folder (e.g., ./build)
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
