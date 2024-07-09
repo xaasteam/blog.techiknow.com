@@ -1,4 +1,4 @@
-name: "(Release) Release dev container templates"
+name: "Pages deploy"
 
 on:
   workflow_dispatch:
@@ -20,7 +20,7 @@ jobs:
         uses: devcontainers/action@v1
         with:
           publish-templates: "true"
-          base-path-to-templates: "./src"
+          base-path-to-templates: "./docs"
 
       # Assuming the action above prepares the content for GitHub Pages in a folder (e.g., ./build)
       - name: Deploy to GitHub Pages
