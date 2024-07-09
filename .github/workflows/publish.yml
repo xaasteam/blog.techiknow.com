@@ -1,0 +1,32 @@
+name: "(Release) Release dev container templates"
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: write # Ensure you have permissions to write contents
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: "Publish"
+        uses: devcontainers/action@v1
+        with:
+          publish-templates: "true"
+          base-path-to-templates: "./src"
+
+      # Assuming the action above prepares the content for GitHub Pages in a folder (e.g., ./build)
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
+        with:
+          # Specify the path to the directory that contains the content to be deployed
+          path: ./build # Adjust this path to where your GitHub Pages content is located
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
