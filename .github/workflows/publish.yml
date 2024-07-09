@@ -26,8 +26,6 @@ jobs:
   # Build job
   build:
     runs-on: ubuntu-latest
-    env:
-      MDBOOK_VERSION: 0.4.36
     steps:
       - uses: actions/checkout@v4
       - name: Install Quarto CLI
@@ -41,8 +39,8 @@ jobs:
         id: pages
         uses: actions/configure-pages@v5
 
-      - name: Build with mdBook
-        run: mdbook build
+      - name: Build with quarto cli
+        run: quarto render
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
