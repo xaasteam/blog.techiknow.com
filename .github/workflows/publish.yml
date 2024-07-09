@@ -23,6 +23,33 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # Build job
+  build:
+    runs-on: ubuntu-latest
+    env:
+      MDBOOK_VERSION: 0.4.36
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Quarto CLI
+        run: |
+          wget https://github.com/quarto-dev/quarto-cli/releases/download/v1.5.53/quarto-1.5.53-linux-amd64.tar.gz
+          mkdir -p /opt/quarto \
+              && tar -C /opt/quarto -xvzf quarto-1.5.53-linux-amd64.tar.gz
+          ln -s /opt/quarto/quarto-1.5.53/bin/quarto /usr/local/bin/quarto
+          
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Build with mdBook
+        run: mdbook build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./docs
+
+
   # Single deploy job since we're just deploying
   deploy:
     environment:
@@ -34,11 +61,11 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          # Upload entire repository
-          path: './docs'
+      # - name: Upload artifact
+      #   uses: actions/upload-pages-artifact@v3
+      #   with:
+      #     # Upload entire repository
+      #     path: './docs'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

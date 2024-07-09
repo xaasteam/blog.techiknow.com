@@ -35,9 +35,9 @@ RUN rm quarto-1.5.53-linux-arm64.tar.gz
 # Verify installation
 RUN quarto --version
 
-# Install Deno (ensure the version is compatible with your architecture)
-RUN curl -fsSL https://deno.land/x/install/install.sh | sh && \
-    ln -s /root/.deno/bin/deno /usr/local/bin/deno
+# # Install Deno (ensure the version is compatible with your architecture)
+# RUN curl -fsSL https://deno.land/x/install/install.sh | sh && \
+#     ln -s /root/.deno/bin/deno /usr/local/bin/deno
 
 # Set the working directory
 WORKDIR /app
