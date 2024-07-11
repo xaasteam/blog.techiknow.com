@@ -1,0 +1,35 @@
+---
+title: "GitHub Repo naming convention"
+---
+
+## GitHub Organization Naming Convention
+
+The GitHub organization for the Analytics and Data Science team should follow this naming convention: `analytics-ds`
+
+This clearly identifies the organization as belonging to the Analytics and Data Science team.
+
+## GitHub Repository Naming Convention
+
+The repositories within the `analytics-ds` GitHub organization should follow this naming convention: `<project-name>-<repo-type>`
+
+Where:
+
+-   `<project-name>` is a short, descriptive name for the project or initiative the repository is associated with.
+-   `<repo-type>` is one of the following values:
+-   `data`: for repositories containing data files, datasets, or data processing code.
+-   `models`: for repositories containing machine learning models, model training code, or model deployment artifacts.
+-   `etl`: for repositories containing extract, transform, and load (ETL) pipelines or scripts.
+-   `viz`: for repositories containing data visualization code, dashboards, or reporting tools.
+-   `infra`: for repositories containing infrastructure as code, deployment configurations, or DevOps tooling.
+-   `docs`: for repositories containing project documentation, wikis, or other non-code artifacts.
+
+Examples of repository names following this convention:
+
+-   `customer-churn-data`
+-   `fraud-detection-models`
+-   `sales-pipeline-etl`
+-   `marketing-dashboard-viz`
+-   `data-platform-infra`
+-   `project-roadmap-docs`
+
+This naming convention helps organize repositories by their primary purpose, making it easier to navigate the codebase and understand the contents of each repository at a glance.

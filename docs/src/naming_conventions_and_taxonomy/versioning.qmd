@@ -1,0 +1,46 @@
+---
+title: "Versioning"
+---
+
+This project follows a specific versioning scheme to manage releases and track changes effectively.
+
+## Version Format
+
+The version number is structured as follows:
+
+
+- `X` represents the major version number, which is incremented for significant changes, breaking API changes, or major architectural updates.
+- `Y` represents the minor version number, which is incremented for new features, enhancements, or non-breaking changes.
+- `Z` represents the patch version number, which is incremented for bug fixes, documentation updates, or minor changes that do not affect the existing functionality.
+
+## Semantic Versioning
+
+This project adheres to the principles of [Semantic Versioning](https://semver.org/). In summary:
+
+- Major version increments (e.g., `1.0.0` to `2.0.0`) indicate breaking changes that are not backward-compatible.
+- Minor version increments (e.g., `1.0.0` to `1.1.0`) introduce new features or enhancements while maintaining backward compatibility.
+- Patch version increments (e.g., `1.0.0` to `1.0.1`) include bug fixes or minor changes that do not affect the existing functionality.
+
+## Version Tagging
+
+Each release is tagged in the Git repository with the corresponding version number. For example:
+
+
+This tag can be used to reference a specific version of the codebase.
+
+## Changelog
+
+Changes for each release are documented in the `CHANGELOG.md` file, which follows the [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format. The changelog provides a detailed record of what has changed between versions, making it easier to understand the evolution of the project.
+
+## Release Process
+
+The release process involves the following steps:
+
+1. Update the version number in the appropriate files (e.g., `package.json`, `setup.py`, etc.).
+2. Update the `CHANGELOG.md` file with the changes for the new release.
+3. Commit the changes with a descriptive commit message.
+4. Create a new Git tag for the release version.
+5. Push the tag to the remote repository.
+6. Create a new release on the project's hosting platform (e.g., GitHub, GitLab, etc.), attaching the relevant artifacts or binaries.
+
+By following this versioning scheme and adhering to the release process, it becomes easier to manage and communicate changes effectively, ensuring a consistent and reliable experience for users and contributors.

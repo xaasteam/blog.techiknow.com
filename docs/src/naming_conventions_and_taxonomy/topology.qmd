@@ -1,0 +1,61 @@
+---
+title: "Team Topology"
+---
+
+## Teams
+
+-   DS
+-   MDx
+-   MLE
+-   DevOps
+-   Leads
+-   Managers
+
+## Permisions
+
+-   Write
+-   Maintain
+-   Admin
+-   Owner
+
+## CODEOWNERS
+
+Terraform deploymenst repo:
+
+``` yml
+# Lines starting with '#' are comments.
+# Each line is a file pattern followed by one or more owners.
+
+# More details are here: https://help.github.com/articles/about-codeowners/
+
+# The '*' pattern is global owners.
+
+# Order is important. The last matching pattern has the most precedence.
+# The folders are ordered as follows:
+
+# In each subsection folders are ordered first by depth, then alphabetically.
+# This should make it easy to add new rules without breaking existing ones.
+
+# Global rule:
+# Teams
+*                           @analytics-ds/write_team
+*                           @analytics-ds/maintain_team
+*                           @analytics-ds/admin_team
+
+# Development Environment
+# Write team can modify less critical files, maintain team approves
+/dev/*.tf                   @analytics-ds/write_team @analytics-ds/maintain_team 
+/dev/modules/non_critical   @analytics-ds/write_team @analytics-ds/maintain_team
+
+# Maintain team manages core infrastructure code in dev
+/dev/modules/core           @analytics-ds/maintain_team
+
+# More restrictive access
+.github/*                   @analytics-ds/admin_team
+# Admin team has full control over production infrastructure
+/prod/*.tf                  @analytics-ds/admin_team
+
+# Global Rules
+# Admin team has final say on all changes (optional)
+*                           @analytics-ds/admin_team 
+```

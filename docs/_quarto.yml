@@ -1,0 +1,66 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Analytics and Data Science"
+  # For example, if your site is served from https://example.com/mysite/, then add:
+  # site-path: "/mysite/"
+  image: images/logo.jpg
+  favicon: images/logo.jpg
+  page-footer: "Copyright 2024, Health First"
+  reader-mode: true
+  site-url: https://github.healthfirst.org/pages/analytics-ds/docs
+  repo-url: https://github.healthfirst.org/analytics-ds/docs
+  issue-url: https://github.healthfirst.org/analytics-ds/docs/issues/new/choose
+  repo-actions: [edit, issue]
+  page-navigation: true
+  back-to-top-navigation: true
+  bread-crumbs: true 
+  navbar:
+    logo: images/logo.jpg
+    logo-href: ../index.html
+    # left:
+    #   - href: docs/data_science/index.qmd
+    #     text: Data Science
+    #   - href: docs/mle/index.qmd
+    #     text: Machine Learning
+    right:
+      - href: blog.qmd
+    tools:
+      - icon: github
+        menu:
+          - text: Source Code
+            href:  https://github.healthfirst.org/analytics-ds/docs
+          - text: Pull Requests
+            href:  https://github.healthfirst.org/analytics-ds/docs/pulls
+  sidebar:
+      style: "floating"
+      search: true
+      contents: 
+        - index.qmd
+        - auto: src/**/*
+        # - docs/*
+        # - auto: docs/*
+
+      # contents:
+      #   - section: "Basics"
+      #     contents:
+      #       - index.qmd
+      #       - basics-knitr.qmd
+      #       - basics-jupyter.qmd
+      #   - section: "Layout"
+      #     contents:
+      #       - layout.qmd
+      #       - layout-knitr.qmd
+      #       - layout-jupyter.qmd
+
+format:
+  html:
+    theme: 
+      light: cosmo
+      dark: slate
+    css: styles.css
+    toc: true
+
+

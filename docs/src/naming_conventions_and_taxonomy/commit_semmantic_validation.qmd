@@ -1,0 +1,44 @@
+---
+title: "Commit semmantics"
+---
+
+## Commit semantic validation
+
+Refers to enforcing a consistent format and structure for commit messages in a software project. This helps maintain a clear and readable commit history, making it easier to understand the changes made and the reasons behind them. One popular convention for commit messages is the Conventional Commits specification. [1]
+
+The Conventional Commits specification suggests the following format for commit messages:
+```xml
+<type>(<scope>): <subject>
+<BLANK LINE>
+<body>
+<BLANK LINE>
+<footer>
+```
+
+Here's a breakdown of the different parts:
+
+1. Type : A single word describing the type of change, such as `feat` (new feature), `fix` (bug fix), `docs` (documentation changes), `style` (formatting, missing semi-colons, etc.), `refactor` (code changes that neither fix a bug nor add a feature), `test` (adding or refactoring tests), `chore` (updating build tasks, package manager configs, etc.).
+
+2. Scope (optional): A phrase describing the scope of the change, such as the name of the module, component, or service affected.
+
+3. Subject : A brief summary of the change, in the imperative mood (e.g., "Add feature" instead of "Added feature" or "Adds feature").
+
+4. Body (optional): A more detailed explanation of the change, if necessary.
+
+5. Footer (optional): Additional metadata, such as breaking change notes, refer ences to issues or pull requests, or other relevant information.
+
+Example:
+
+```sh
+feat(auth): add email verification
+
+Add email verification functionality to the authentication service.
+Users will receive a verification email after signing up, and their
+account will remain inactive until they verify their email address.
+
+Closes #123
+```
+
+Enforcing commit semantic validation can be done through tools like Git hooks, linters, or CI/CD pipelines. These tools can check if commit messages adhere to the specified format and conventions, and prevent non-compliant commits from being pushed or merged.
+
+By following a consistent commit message format, it becomes easier to generate changelogs, write release notes, and understand the project's evolution over time.
