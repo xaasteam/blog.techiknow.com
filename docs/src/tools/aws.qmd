@@ -1,0 +1,21 @@
+aws ecr get-login-password --region us-east-1 --profile ads | docker  login --username AWS --password-stdin 543733427846.dkr.ecr.us-east-1.amazonaws.com
+
+ aws ecr describe-repositories --profile 
+
+aws configure sso
+
+
+ `~/.aws/config`
+
+ ```sh 
+ [profile ads]
+sso_session = anlytic-dev
+sso_account_id = 730335362139
+sso_role_name = AWSReadOnlyAccess
+region = us-east-1
+output = json
+[sso-session anlytic-dev]
+sso_start_url = https://d-90670a4e60.awsapps.com/start#/
+sso_region = us-east-1
+sso_registration_scopes = sso:account:access
+```
