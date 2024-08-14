@@ -1,0 +1,93 @@
+# Run Github pipelines locally
+
+## Setup Act
+Necessary prerequisites for running act:
+`act` depends on docker
+
+On Mac simply run
+```sh
+# as a gh cli extention
+gh extension install https://github.com/nektos/gh-act
+
+# or with brew
+brew install act
+```
+
+[Official Act usage guide by Nectos](https://nektosact.com/usage/index.html)
+
+```sh
+# first login to your github cli
+gh auth login
+
+gh extension install https://github.com/nektos/gh-act
+```
+
+## Test your first workflow locally
+
+```sh
+gh act -W .github/workflows/test-setup-python.yaml --container-architecture linux/amd64
+```
+## Run Act in container
+
+Login
+`aws ecr get-login-password --region us-east-1 --profile ads | docker  login --username AWS --password-stdin 543733427846.dkr.ecr.us-east-1.amazonaws.com`
+
+Pull 
+`docker pull 543733427846.dkr.ecr.us-east-1.amazonaws.com/actions/hf-actions-runner-dind:gh-act-v2`
+
+
+## Run workflow on GitHub runner directly
+
+### Setup gh cli wrapper for act
+This setup will allow you to execute your workflow dirrectly on your enterprise github instance.
+
+1. Create `actwrapper`
+```sh
+touch `$HOME/bin/actwrapper
+
+#don't forget to allow to add execute on file
+chmod +x $HOME/bin/actwrapper  
+```
+
+2. Add code bellow to `actwrapper`
+```sh
+#!/bin/bash
+
+export GH_HOST=github.healthfirst.org
+
+file="$1"
+shift
+
+# Production image: 543733427846.dkr.ecr.us-east-1.amazonaws.com/actions/hf-actions-runner-dind:v2
+gh_act_v2=543733427846.dkr.ecr.us-east-1.amazonaws.com/actions/hf-actions-runner-dind:gh-act-v2
+
+GITHUB_COM_ACTIONS=(
+    'actions/checkout'
+    'actions/setup-node'
+    'actions/setup-python'
+    'azure/setup-helm'
+    'aws-actions/configure-aws-credentials'
+)
+
+PLATFORMS_MAP=(
+    "prod-k8s-dind=$gh_act_v2"
+    "hf-cicd-ubuntu-latest=$gh_act_v2"
+    "hf-cicd-ubuntu-lite=$gh_act_v2"
+    "ubuntu-latest=$gh_act_v2"
+)
+
+gh act \
+    --github-instance github.healthfirst.org \
+    --secret GITHUB_TOKEN="$(gh auth token)" \
+    --insecure-secrets \
+    "${GITHUB_COM_ACTIONS[@]/#/--replace-ghe-action-with-github-com=}" \
+    "${PLATFORMS_MAP[@]/#/--platform=}" \
+    -W "$file" "$@" workflow_dispatch
+```
+
+3. Add `actwrapper` to your shell
+
+Open in text editor of your choice, shell configuration file, in my case its `~/.zshrc` and add to the end of the file line `export PATH=$PATH:$HOME/bin` by running:
+```sh
+echo "export PATH=$PATH:$HOME/bin" >> ~/.zshrc
+```

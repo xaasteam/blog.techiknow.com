@@ -1,0 +1,24 @@
+## install 
+
+```sh
+brew update
+brew install pyenv
+
+
+# add to ~/.zshrc
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+```
+
+## usage
+```sh
+# gives the list of all available versions
+pyenv install -l 
+
+pyenv install 3.9
+# switch to
+pyenv global 3.9
+
+source ~/.zshrc 
+```

@@ -1,0 +1,29 @@
+# Git CMD
+
+## Aliases
+
+```sh
+# list all aliases
+alias
+
+# edit ~/.zshrc to update alias
+code ~/.zshrc
+
+# add custom ssh keys for git cmd
+alias xgcm='git commit -c core.sshCommand="ssh -i ~/.ssh/xaas-github" -m '
+alias xgph='git push -c core.sshCommand="ssh -i ~/.ssh/xaas-github"'
+alias xgcl='git clone -c core.sshCommand="ssh -i ~/.ssh/xaas-github"'
+
+
+gacp() {
+  git add .
+  git commit -m "$1"
+  git push
+}
+
+# use
+gacp "Update README and add new feature"
+
+# reload zsh
+source ~/.zshrc
+```

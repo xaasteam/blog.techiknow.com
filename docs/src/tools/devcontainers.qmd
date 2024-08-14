@@ -1,0 +1,8 @@
+# Devcontainers
+
+## History and future agenda
+
+## Setup your first devcontainer
+Incapsulate your local dev environment for your project in VS Code
+
+## Collaborate with your team 
