@@ -1,0 +1,192 @@
+# Prepare your Ubuntu for LLM development with CUDA 
+
+## Install Docker and Docker Desktop
+
+### Decker engine
+Ref: [](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository)
+
+```sh 
+# Add Docker's official GPG key:
+sudo apt-get update
+sudo apt-get install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add the repository to Apt sources:
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+sudo apt-get update
+
+```
+Install the Docker packages.
+```sh
+# install the latest version
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+# verify 
+docker -v
+```
+
+### Docker Desktop
+
+Ref: [Install Docker Desktop on Ubuntu](https://docs.docker.com/desktop/install/ubuntu/)
+
+Download latest .deb package and run:
+
+```sh 
+# notice that the file is a symlink to /dev/null
+file /etc/xdg/systemd/user/docker-desktop.service
+# delete it
+sudo rm /etc/xdg/systemd/user/docker-desktop.service
+
+# enable the service for the user
+systemctl --user enable docker-desktop
+
+# run force
+systemctl --user force-reload docker-desktop
+
+```
+
+#### Troubleshooting
+
+> Note
+> The latest Ubuntu 24.04 LTS is not yet supported. Docker Desktop will fail to start. Due to a change in how the latest Ubuntu release restricts the unprivileged namespaces, sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0 needs to be run at least once. Refer to the Ubuntu Blog for more details.
+
+Ref: [Failed to start docker-desktop.service] ](https://stackoverflow.com/questions/75907472/docker-desktop-does-not-launch-on-ubuntu-failed-to-start-docker-desktop-service)
+
+## Install Ollama
+
+Ollama installation is simple:
+```sh 
+# install
+curl -fsSL https://ollama.com/install.sh | sh
+
+# verify
+ollama -verify
+
+# pull models from https://ollama.com/librar1y
+ollama pull llama3
+
+# run
+ollama run llama3
+
+# api example
+curl -X POST http://localhost:11434/api/generate -d '{
+  "model": "llama3",
+  "prompt":"Why is the sky blue?"
+ }'
+```
+
+## Install CUDA
+
+###
+ - validarte if your GPU is compatible
+```sh
+# check kernel compatibility
+~$ uname -r
+6.8.0-38-generic
+
+lspci -k | grep -EA2 'VGA|3D'
+01:00.0 VGA compatible controller: NVIDIA Corporation AD104 [GeForce RTX 4070] (rev a1)
+	Subsystem: PNY AD104 [GeForce RTX 4070]
+	Kernel modules: nvidiafb, nouveau, nvidia_drm, nvidia
+--
+10:00.0 VGA compatible controller: Advanced Micro Devices, Inc. [AMD/ATI] Raphael (rev cb)
+	Subsystem: Gigabyte Technology Co., Ltd Raphael
+	Kernel driver in use: amdgpu
+
+```
+
+
+### Nvidia CUDA install for RTX GPU
+
+NVIDIA CUDA Toolkit (available at https://developer.nvidia.com/cuda-downloads)
+
+## CUDA Toolkit & Driver
+Download Installer for Linux Ubuntu 24.04 x86_64
+```sh
+# Base Installer
+wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2404/x86_64/cuda-ubuntu2404.pin
+
+sudo mv cuda-ubuntu2404.pin /etc/apt/preferences.d/cuda-repository-pin-600wget https://developer.download.nvidia.com/compute/cuda/12.5.1/local_installers/cuda-repo-ubuntu2404-12-5-local_12.5.1-555.42.06-1_amd64.deb
+
+sudo dpkg -i cuda-repo-ubuntu2404-12-5-local_12.5.1-555.42.06-1_amd64.deb
+
+sudo cp /var/cuda-repo-ubuntu2404-12-5-local/cuda-*-keyring.gpg /usr/share/keyrings/
+
+sudo apt-get update
+
+sudo apt-get -y install cuda-toolkit-12-5
+
+
+# driver Installer
+sudo apt-get install -y nvidia-driver-555-open
+sudo apt-get install -y cuda-drivers-555
+```
+Fishi installing package:
+[/home/ubu/Pictures/Screenshots/Screenshot from 2024-07-11 22-08-53.png]
+password is not importan
+
+
+
+
+## Setup CUDA and finish install 
+```sh
+# verify
+nvcc --version
+
+> Command 'nvcc' not found, but can be installed with:
+> sudo apt install nvidia-cuda-toolkit
+
+
+# check where CUDA is installed
+find / -type d -name cuda 2>/dev/null
+
+> /usr/local/cuda-12.5/targets/x86_64-linux/include/cuda
+
+# add nvcc to path
+nano ~/.bashrc
+
+# add to the end of the file 
+> export PATH=/usr/local/cuda-12.5/bin${PATH:+:${PATH}}
+> export LD_LIBRARY_PATH=/usr/local/cuda-12.5/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+
+# save and reloade
+source ~/.bashrc
+
+nvcc --version
+> nvcc: NVIDIA (R) Cuda compiler driver
+> Copyright (c) 2005-2024 NVIDIA Corporation
+> Built on Thu_Jun__6_02:18:23_PDT_2024
+> Cuda compilation tools, release 12.5, V12.5.82
+> Build cuda_12.5.r12.5/compiler.34385749_0
+
+# all set 
+```
+
+## Install Open Webui
+
+- Start docker:
+```bash
+# verivy docker is not running and start
+systemctl start docker
+sudo service docker start
+
+# or
+sudo dockerd
+
+```
+
+- **To run Open WebUI via docker with Nvidia GPU support**, use this command:
+
+```bash
+docker run -d -p 3000:8080 --gpus all --add-host=host.docker.internal:host-gateway -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:cuda
+
+
+```
+
+## Tensorflow

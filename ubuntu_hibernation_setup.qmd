@@ -1,0 +1,114 @@
+# hibernation
+ - Add more space to swap file
+```bash
+# check what is alocated now 
+~$ free
+               total        used        free      shared  buff/cache   available
+Mem:        31786028     9270092      914408      278044    22357348    22515936
+Swap:        8388604           0     8388604
+
+~$ swapon --show
+NAME      TYPE SIZE USED PRIO
+/swap.img file   8G   0B   -2
+
+# we need 32Gb, si it's more than Mem 31786028
+
+~$ cat /etc/fstab 
+# /etc/fstab: static file system information.
+#
+# Use 'blkid' to print the universally unique identifier for a
+# device; this may be used with UUID= as a more robust way to name devices
+# that works even if disks are added and removed. See fstab(5).
+#
+# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+# / was on /dev/nvme0n1p6 during curtin installation
+/dev/disk/by-uuid/b6d19825-72af-4304-a8ec-d4afebe44181 / ext4 defaults 0 1
+# /boot/efi was on /dev/nvme0n1p1 during curtin installation
+/dev/disk/by-uuid/DA4E-A766 /boot/efi vfat defaults 0 1
+/swap.img	none	swap	sw	0	0
+
+# add more space to swap file
+~$ sudo su
+~$ swapoff -a
+~$ rm /swap.img
+~$ dd if=/dev/zero of=/swap.img count=32768 bs=1MiB
+~$ chmod 600 /swap.img
+~$ mkswap /swap.img
+~$ swapon /swap.img
+
+# edit kernel cmd
+~$ cat /proc/cmdline 
+BOOT_IMAGE=/boot/vmlinuz-6.8.0-38-generic root=UUID=b6d19825-72af-4304-a8ec-d4afebe44181 ro quiet splash vt.handoff=7
+
+~$ filefrag -v /swap.img
+Filesystem type is: ef53
+File size of /swap.img is 34359738368 (8388608 blocks of 4096 bytes)
+ ext:     logical_offset:        physical_offset: length:   expected: flags:
+   0:        0..    4095:    6975488..   6979583:   4096:            
+   1:     4096..  233471:    8683520..   8912895: 229376:    6979584:
+   2:   233472..  266239:    8650752..   8683519:  32768:    8912896:
+    ...
+    ...
+   257:  8368128.. 8372223:   23109632..  23113727:   4096:   23130112:
+   258:  8372224.. 8380415:   23101440..  23109631:   8192:   23113728:
+   259:  8380416.. 8388607:   23117824..  23126015:   8192:   23109632: last,eof
+/swap.img: 260 extents found
+
+# note from previous commands:
+# resume=b6d19825-72af-4304-a8ec-d4afebe44181 resume_offset=6975488
+
+~$ nano /etc/default/grub
+# update the line
+# GRUB_CMDLINE_LINUX_DEFAULT="quiet splash resume=b6d19825-72af-4304-a8ec-d4afebe44181 resume_offset=6975488"
+# ctrl + O & ctrl + X
+~$ update-grub
+~$ reboot
+
+# verify added params
+~$ cat /proc/cmdline
+~$ systemctl hybernate
+
+~$ lsblk
+NAME        MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS
+loop0         7:0    0     4K  1 loop /snap/bare/5
+loop1         7:1    0 298.7M  1 loop /snap/codium/394
+loop2         7:2    0  63.9M  1 loop /snap/core20/2318
+loop3         7:3    0  74.2M  1 loop /snap/core22/1380
+loop4         7:4    0 269.6M  1 loop /snap/firefox/4173
+loop5         7:5    0  10.7M  1 loop /snap/firmware-updater/127
+loop6         7:6    0 505.1M  1 loop /snap/gnome-42-2204/176
+loop7         7:7    0  91.7M  1 loop /snap/gtk-common-themes/1535
+loop8         7:8    0  10.3M  1 loop /snap/snap-store/1124
+loop9         7:9    0  38.7M  1 loop /snap/snapd/21465
+loop10        7:10   0   476K  1 loop /snap/snapd-desktop-integration/157
+loop11        7:11   0  38.8M  1 loop /snap/snapd/21759
+nvme0n1     259:0    0 931.5G  0 disk 
+├─nvme0n1p1 259:1    0   100M  0 part /boot/efi
+├─nvme0n1p2 259:2    0    16M  0 part 
+├─nvme0n1p3 259:3    0 180.5G  0 part 
+├─nvme0n1p4 259:4    0   600G  0 part 
+├─nvme0n1p5 259:5    0   900M  0 part 
+└─nvme0n1p6 259:6    0   150G  0 part /var/snap/firefox/common/host-hunspell
+                                      /
+
+# note nvme0n1p6 259:6
+~$ ls -ls /dev/nvme0n1p6
+
+~$ cat /sys/power/resume
+0:0
+~$ echo 259:6 > /sys/power/resume
+
+
+~$ nano /etc/tmpfiles.d/hibernation_resume.conf
+
+#    Path                   Mode UID  GID  Age Argument
+w    /sys/power/resume       -    -    -    -   259:6
+
+~$ 
+
+# verify
+~$ cat /sys/power/resume
+259:6
+
+~$ systemctl hybernate
+```
