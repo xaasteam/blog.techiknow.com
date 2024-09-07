@@ -1,7 +1,8 @@
 {
-    "name": "Quarto Website Development",
-    "image": "mcr.microsoft.com/devcontainers/typescript-node",
-    "customizations": {
+  "name": "Git Hooks Dev Container",
+  "workspaceFolder": "/workspaces/conventional-repo-template",
+  "image": "devcontainer:latest",
+  "customizations": {
     "vscode": {
       "settings": { 
         "terminal.integrated.shell.linux": "/bin/bash"
@@ -13,28 +14,17 @@
       ]
     }
   },
-  // https://containers.dev/features
-  // "features": {
-  //   "ghcr.io/devcontainers/features/aws-cli:1": {},
-  //   "ghcr.io/devcontainers/features/github-cli:1": {},
-  //   "ghcr.io/devcontainers/features/git:1": {},
-  //   "ghcr.io/devcontainers/features/python:1": {},
-  //   "ghcr.io/devcontainers-contrib/features/act:": {},
-  //   "ghcr.io/devcontainers-contrib/features/act-asdf": {},
-  //   "ghcr.io/devcontainers-contrib/features/actionlint": {},
-  //   "ghcr.io/devcontainers-contrib/features/actions-runner": {},
-  //   "ghcr.io/devcontainers-contrib/features/apt-get-packages": {},
-  //   "ghcr.io/devcontainers-contrib/features/apt-packages": {},
-  //   "ghcr.io/devcontainers-contrib/features/gh-cli": {},
-  //   "ghcr.io/devcontainers-contrib/features/npm-package": {},
-  //   "ghcr.io/devcontainers-contrib/features/terraform-asdf": {},
-  //   "ghcr.io/guiyomh/features/vim": {}
-  // },
-  // "forwardPorts": [
-  //   4000
-  // ],
-  // "mounts": [
-  //   "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
-  // ],
-  // "remoteUser": "vscode"
+  "features": {
+    "ghcr.io/devcontainers-contrib/features/cz-cli:1": {
+      "version": "latest"
+    },
+    "ghcr.io/dhoeric/features/act:1": {},
+    "ghcr.io/lee-orr/rusty-dev-containers/zellij:0": {},
+    "ghcr.io/nils-geistmann/devcontainers-features/zsh:0": {
+      "setLocale": true,
+      "theme": "agnoster",
+      "plugins": "git docker",
+      "desiredLocale": "en_US.UTF-8 UTF-8"
+    }
+  }
 }
