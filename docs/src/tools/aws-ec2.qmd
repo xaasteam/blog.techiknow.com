@@ -1,0 +1,17 @@
+
+## Usefull AWS CLI commands
+```sh
+# Get AMI of needed EC2
+aws ec2 describe-images --profile ads \
+    --region us-east-1 \
+    --owners 679593333241 \
+    --filters "Name=name,Values=debian-11-amd64-*" "Name=is-public,Values=true" "Name=state,Values=available" \
+    --query "sort_by(Images, &CreationDate)[-1].[ImageId, Name, Description]" \
+    --output text
+
+# Get Subnetsaws
+ec2 describe-subnets --profile ads
+
+# Get VPCs
+aws ec2 describe-vpcs --profile ads
+```

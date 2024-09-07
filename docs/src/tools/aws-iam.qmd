@@ -1,0 +1,125 @@
+# IAM Live
+
+## Local step-by-step
+
+1. Docker proxy
+```sh
+docker run \
+  -p 80:10080 \
+  -p 443:10080 \
+  --name iamlive-test \
+  -it unfor19/iamlive-docker \
+  --mode proxy \
+  --bind-addr 0.0.0.0:10080 \
+  --force-wildcard-resource \
+  --output-file "/app/iamlive.log"
+# Runs in the background ...
+
+iamlive --set-ini
+
+iamlive --set-ini --mode proxy
+
+
+aws s3 ls
+
+
+# ferraform proxy cli
+export AWS_CA_BUNDLE=~/.iamlive/ca.pem \
+ HTTP_PROXY=http://127.0.0.1:10080 \
+ HTTPS_PROXY=http://127.0.0.1:10080
+
+export AWS_CA_BUNDLE=~/.iamlive/ca.pem \
+ HTTP_PROXY=http://localhost:10080 \
+ HTTPS_PROXY=http://localhost:10080
+
+
+```
+
+3. run iamlive cli
+```zsh
+iamlive terraform apply
+
+iamlive generate-policy > my-policy.json
+
+
+```
+
+# Prep
+
+
+## AWS CLI setup
+```zsh
+# To switch between AWS accounts using the AWS CLI, you can leverage named profiles. Here are the steps: [1]
+aws configure
+
+# Provide the AWS Access Key ID, Secret Access Key, and desired AWS Region when prompted for each profile.
+aws configure --profile profile_name
+
+#List Configured Profiles
+aws configure list-profiles
+
+# To switch between accounts, use the `--profile` option with AWS CLI commands: [3]
+aws --profile profile_name service_name command
+
+# For example, to list S3 buckets in the "account1" profile:
+aws --profile account1 s3 ls
+
+# And to switch to the "account2" profile:
+aws --profile account2 ec2 describe-instances
+
+# If you need to assume an IAM role in a different account, you can configure the source profile credentials and the role ARN:
+aws configure --profile cross-account-profile
+
+# Provide the source profile name when prompted, and for the role ARN, enter 
+# arn:aws:iam::[ACCOUNT_ID]:role/[ROLE_NAME] .
+
+# Then, use --profile cross-account-profile to execute commands with the assumed role.
+# Set Environment Variable (Optional)
+# Alternatively, you can set the AWS_PROFILE environment variable to the desired profile:
+export AWS_PROFILE=profile_name
+```
+
+## Generate certificate
+```sh
+# Use the AWS CLI to create a new private Certificate Authority (CA): 
+aws acm-pca --profile temp create-certificate-authority \
+    --certificate-authority-type ROOT \
+    --certificate-authority-configuration '{"KeyAlgorithm":"RSA_2048","SigningAlgorithm":"SHA256WITHRSA","Subject":{"Country":"US","Organization":"MyCompany","OrganizationalUnit":"Security","CommonName":"MyRootCA"}}' \
+    --idempotency-token 1234 \
+    --query 'CertificateAuthorityArn' \
+    --output text
+
+# Use the CA ARN to get the CSR:
+aws acm-pca get-certificate-authority-csr --profile temp \
+    --certificate-authority-arn arn:aws:acm-pca:us-east-1:730335362139:certificate-authority/a047c0f8-72c5-4c11-9ca3-16a5661857d5 \
+    --query 'Csr' \
+    --output text > ca.csr
+
+# Self-Sign the CSR
+openssl x509 -req \
+    -days 3650 \
+    -in ca.csr \
+    -signkey ca.key \
+    -out ca.pem
+
+# Import the CA Certificate
+aws acm-pca import-certificate-authority-certificate \
+    --certificate-authority-arn YOUR_CA_ARN \
+    --certificate file://ca.pem
+
+# Save the CA Certificate
+cp ca.pem "${HOME}/.iamlive/ca.pem"
+
+```
+
+
+
+export AWS_ACCESS_KEY_ID="AKIA_DUMMY_USER_ACCESS_KEY_ID"
+export AWS_SECRET_ACCESS_KEY="DUMMY_USER_SECRET_ACCESS_KEY"
+ 
+export HTTP_PROXY=http://127.0.0.1:80 \
+ HTTPS_PROXY=http://127.0.0.1:443 \
+ AWS_CA_BUNDLE="${HOME}/.iamlive/ca.pem"
+
+
+## Pike CLI

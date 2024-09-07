@@ -25,7 +25,10 @@ gh extension install https://github.com/nektos/gh-act
 ## Test your first workflow locally
 
 ```sh
-gh act -W .github/workflows/test-setup-python.yaml --container-architecture linux/amd64
+gh act -W .github/workflows/test-setup-python.yaml 
+
+# for mac full command might look like this
+gh act -W .github/workflows/test-setup-python.yaml --platform hf-cicd-ubuntu-latest=543733427846.dkr.ecr.us-east-1.amazonaws.com/actions/hf-actions-runner-dind:gh-act-v2 --container-architecture linux/amd64
 ```
 ## Run Act in container
 
