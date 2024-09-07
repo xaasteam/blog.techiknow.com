@@ -1,0 +1,15 @@
+https://app.localstack.cloud/getting-started
+
+sudo tar xvzf ~/Downloads/localstack-cli-3.7.0-linux-*-onefile.tar.gz -C /usr/local/bin
+
+brew install localstack/tap/localstack-cli
+
+docker run -d -p 4566:4566 -p 4571:4571 --name localstack localstack/localstack
+
+source .env
+export AWS_ACCESS_KEY_ID="test"
+export AWS_SECRET_ACCESS_KEY="test"
+export AWS_DEFAULT_REGION="us-east-1"
+
+export LOCALSTACK_AUTH_TOKEN="ls-xEMu9793-feJu-giHU-JElo-hoCa51759f72"
+

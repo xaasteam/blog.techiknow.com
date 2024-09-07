@@ -1,0 +1,34 @@
+## Setup aliases
+
+~/.zshrc
+```sh
+# my custom
+
+# my custom
+alias xgcm='git -c core.sshCommand="ssh -i ~/.ssh/xaas-github" commit -m '
+alias xgph='git -c core.sshCommand="ssh -i ~/.ssh/xaas-github" push'
+alias xgcl='git -c core.sshCommand="ssh -i ~/.ssh/xaas-github" clone'
+
+# another way to add aliaces as functions
+gacp() {
+  git add .
+  git commit -m "$1"
+  git push
+}
+```
+
+example:
+```sh
+# git clone with ssh
+xgcl git@github.com:xaasteam/tf_nextjs_serverless.git
+```
+
+setup your acc and add SSH key
+```sh
+# copy into buffer
+pbcopy < ~/.ssh/id_rsa.pub
+```
+
+now you can run
+```
+

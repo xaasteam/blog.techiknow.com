@@ -7,3 +7,12 @@ image: "image.jpg"
 ---
 
 This is a post with executable code.
+
+
+get IP: 
+```sh 
+# local IP
+ipconfig getifaddr en0
+
+# public IP
+dig -4 TXT +short o-o.myaddr.l.google.com @ns1.google.com

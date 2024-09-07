@@ -1,0 +1,18 @@
+# Update default grub loader order
+
+```sh
+# open grub file with editor of your choice. `codium` in my case
+codium /etc/default/grub
+```
+
+Update GRUB_DEFAULT to desired order number of default download:
+```sh
+# set default intem to be loaded by order number
+GRUB_DEFAULT=4
+```
+
+Then run 
+```sh
+# update grub
+sudo update-grub
+```
